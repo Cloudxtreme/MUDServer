@@ -1,4 +1,4 @@
-package mud.mutable
+package mud.immutable
 
 /**
   * Created by jaredmackey on 4/24/16.

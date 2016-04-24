@@ -1,4 +1,4 @@
-package mud.mutable
+package mud.immutable
 
 
 /**
@@ -18,12 +18,12 @@ object Room {
 }
 
 
-class Room(
-          val name: String,
-          val keyword: String,
-          val description: String,
-          val exits: Map[String, String],
-          private var items: List[Item]) {
+case class Room(
+          name: String,
+          keyword: String,
+          description: String,
+          exits: Map[String, String],
+          items: List[Item]) {
 
   def print(): Unit = {
     println(name)
@@ -33,12 +33,11 @@ class Room(
     items.foreach(i => println(i.name))
   }
 
-  def getItem(itemName: String): Option[Item] =
+  def getItem(itemName: String): Option[(Item, Room)] =
     items.find(_.matches(itemName)).map(item => {
-      items = items.diff(List(item))
-      item
+      (item, copy(items = items.diff(List(item))))
     })
 
-  def dropItem(item: Item): Unit = items::= item
+  def dropItem(item: Item): Room = copy(items = item :: items)
 
 }
